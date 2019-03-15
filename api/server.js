@@ -16,16 +16,14 @@ server.get("/games", async (req, res) => {
   res.status(200).json(rows);
 });
 
-server.post("/games", (req, res) => {
+server.post("/games", async (req, res) => {
   const newGame = req.body;
-
-  Games.add(newGame)
-    .then(addedGame => {
-      res.status(201).json(addedGame);
-    })
-    .catch(error => {
-      res.status(500).json(error);
-    });
+  if (!newGame.title || !newGame.genre) {
+    res.status(422).json({ message: "Please include a title and genre" });
+  } else {
+    const addedGame = await Games.add(newGame);
+    res.status(201).json(addedGame);
+  }
 });
 
 module.exports = server;

@@ -37,5 +37,19 @@ describe("server.js", () => {
           releaseYear: null
         });
     });
+    it("should return status 422 if incomplete info provided", async () => {
+      const game = {
+        title: "Tony Hawk's Pro Skater"
+      };
+      const result = await request(server)
+        .post("/games")
+        .send(game)
+        .expect(422);
+    });
+    it("should return status 422 if no info provided", async () => {
+      const result = await request(server)
+        .post("/games")
+        .expect(422);
+    });
   });
 });
