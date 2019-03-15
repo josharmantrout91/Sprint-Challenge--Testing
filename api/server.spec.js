@@ -20,4 +20,22 @@ describe("server.js", () => {
       expect(JSON.parse(res.text)).toHaveLength(0);
     });
   });
+  describe("POST /games", () => {
+    it("should return the provided game", async () => {
+      const game = {
+        title: "Tony Hawk's Pro Skater",
+        genre: "Sports"
+      };
+      const result = await request(server)
+        .post("/games")
+        .send(game)
+        .set("Accept", "application/json")
+        .expect(201, {
+          id: 1,
+          title: "Tony Hawk's Pro Skater",
+          genre: "Sports",
+          releaseYear: null
+        });
+    });
+  });
 });
